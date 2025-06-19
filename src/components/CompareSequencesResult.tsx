@@ -40,7 +40,7 @@ export const proteinColors: Record<string, string> = {
 export function CompareSequenceResult({ firstSequence, secondSequence }: CompareSequenceResultProps) {
 
     const letter = useRef(null);
-    const sequencesForCopy = useRef(null);
+    const sequencesForCopy = useRef <HTMLDivElement>(null);
     const [letterWidth, setLetterWidth] = useState(0);
     const [letterHeight, setLetterHeight] = useState(0);
     const [showFirstSequence, setShowFirstSequence] = useState(true);
@@ -48,11 +48,12 @@ export function CompareSequenceResult({ firstSequence, secondSequence }: Compare
 
 
     useEffect(() => {
-        console.log("!!!", letter.current);
-        if (letter.current) {
-            setLetterWidth(letter.current.offsetWidth); ///!!!!
-            setLetterHeight(letter.current.offsetHeight)
-            console.log("длина", letter.current.offsetWidth, letter.current.offsetHeight);
+        
+        if (letter.current !== null) {
+            const letterRefCurrent = letter.current as HTMLDivElement;
+            setLetterWidth(letterRefCurrent.offsetWidth); ///!!!!
+            setLetterHeight(letterRefCurrent.offsetHeight)
+            console.log("длина", letterRefCurrent.offsetWidth, letterRefCurrent.offsetHeight);
         }
 
 
@@ -60,14 +61,14 @@ export function CompareSequenceResult({ firstSequence, secondSequence }: Compare
     }, [])
 
 
-    const isCopied = useCopySelection(sequencesForCopy);
+    const isCopied = useCopySelection(sequencesForCopy as React.RefObject<HTMLDivElement>); // дублирует строки 43, 53 !!!!
     const smallScreen = useMediaQuery('(max-width:320px)');
 
 
 
     return (<div>
 
-        <FormGroup> {/*!!!!! это тоже будет копироваться, да и вообще все копируется*/}
+        <FormGroup>
             <FormControlLabel
                 control={<Switch checked={showFirstSequence}
                     onChange={() => setShowFirstSequence(prev => !prev)} />}
@@ -106,7 +107,7 @@ export function CompareSequenceResult({ firstSequence, secondSequence }: Compare
             <Box sx={{ display: "flex", flexWrap: "wrap", position: "absolute", top: "1em", gap: "1px", visibility: showSecondSequence ? "visible" : "hidden" }}>
                 {secondSequence.split("").map((protein2, i) =>
                     <Box key={i} sx={{
-                        backgroundColor: protein2 !== firstSequence[i] && "rgb(255, 0, 0)",//!!!!
+                        backgroundColor: protein2 !== firstSequence[i]? "rgb(255, 0, 0)" : undefined,//!!!!
                         borderRadius: 1,
                         width: letterWidth-1,
                         height: letterHeight / 2 - 2,
