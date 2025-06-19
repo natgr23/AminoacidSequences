@@ -8,4 +8,5 @@ export default defineConfig({
     host: true, // или '0.0.0.0'
     port: 3000, // ваш порт
   },
+  base: "/AminoacidSequences/"
 })
