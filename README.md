@@ -18,4 +18,4 @@ https://natgr23.github.io/AminoacidSequences/
 
 ## Стек
 
-JS, TS, React, библиотека MUI
+JS, TS, React, Vite, библиотека MUI
