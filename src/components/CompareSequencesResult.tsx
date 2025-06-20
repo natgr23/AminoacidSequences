@@ -29,7 +29,6 @@ export function CompareSequenceResult({ firstSequence, secondSequence }: Compare
             const letterRefCurrent = letter.current!;
             setLetterWidth(letterRefCurrent.offsetWidth); 
             setLetterHeight(letterRefCurrent.offsetHeight)
-            console.log("длина", letterRefCurrent.offsetWidth, letterRefCurrent.offsetHeight);
         }
 
 
