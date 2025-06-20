@@ -8,7 +8,6 @@ export function useCopySelection(ref: React.RefObject<HTMLElement|null>) {
     useEffect(() => {
         const handleMouseUp = () => {
             const selectedText = window.getSelection();
-            console.log(selectedText, ref.current);
             if (!ref.current || !selectedText) return;
             if (selectedText.toString().length > 0 && ref.current.contains(selectedText.anchorNode)) {
                 navigator.clipboard.writeText(selectedText?.toString())
