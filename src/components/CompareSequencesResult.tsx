@@ -3,6 +3,8 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import { useEffect, useRef, useState } from "react";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useCopySelection } from "./useCopySelection";
+import { aminoacid2group, type AminoAcid } from "../domain/AminoAcid";
+import { group2color } from "../domain/groups";
 
 interface CompareSequenceResultProps {
     firstSequence: string,
@@ -11,35 +13,9 @@ interface CompareSequenceResultProps {
 }
 
 
-
-export const proteinColors: Record<string, string> = {
-    A: "#67E4A6",
-    C: "#FFEA00",
-    L: "#67E4A6",
-    I: "#67E4A6",
-    M: "#67E4A6",
-    F: "#67E4A6",
-    W: "#67E4A6",
-    Y: "#67E4A6",
-    V: "#67E4A6",
-    P: "#67E4A6",
-    G: "#C4C4C4",
-    D: "#FC9CAC",
-    E: "#FC9CAC",
-    K: "#BB99FF",
-    R: "#BB99FF",
-    S: "#80BFFF",
-    T: "#80BFFF",
-    H: "#80BFFF",
-    Q: "#80BFFF",
-    N: "#80BFFF",
-}
-
-
-
 export function CompareSequenceResult({ firstSequence, secondSequence }: CompareSequenceResultProps) {
 
-    const letter = useRef(null);
+    const letter = useRef<HTMLDivElement>(null);
     const sequencesForCopy = useRef <HTMLDivElement>(null);
     const [letterWidth, setLetterWidth] = useState(0);
     const [letterHeight, setLetterHeight] = useState(0);
@@ -50,8 +26,8 @@ export function CompareSequenceResult({ firstSequence, secondSequence }: Compare
     useEffect(() => {
         
         if (letter.current !== null) {
-            const letterRefCurrent = letter.current as HTMLDivElement;
-            setLetterWidth(letterRefCurrent.offsetWidth); ///!!!!
+            const letterRefCurrent = letter.current!;
+            setLetterWidth(letterRefCurrent.offsetWidth); 
             setLetterHeight(letterRefCurrent.offsetHeight)
             console.log("длина", letterRefCurrent.offsetWidth, letterRefCurrent.offsetHeight);
         }
@@ -61,9 +37,11 @@ export function CompareSequenceResult({ firstSequence, secondSequence }: Compare
     }, [])
 
 
-    const isCopied = useCopySelection(sequencesForCopy as React.RefObject<HTMLDivElement>); // дублирует строки 43, 53 !!!!
+    const isCopied = useCopySelection(sequencesForCopy); 
     const smallScreen = useMediaQuery('(max-width:320px)');
 
+
+    const firstSequenceLetters = firstSequence.split("") as AminoAcid[];
 
 
     return (<div>
@@ -92,9 +70,9 @@ export function CompareSequenceResult({ firstSequence, secondSequence }: Compare
             </Box>
 
             <Box sx={{ display: "flex", flexWrap: "wrap", position: "absolute", top: 0, gap: "1px", visibility: showFirstSequence ? "visible" : "hidden" }}>
-                {firstSequence.split("").map((protein1, i) =>
+                {firstSequenceLetters.map((letter, i) =>
                     <Box key={i} sx={{
-                        backgroundColor: proteinColors[protein1],
+                        backgroundColor: group2color[aminoacid2group[letter]],
                         borderRadius: 1,
                         width: letterWidth - 1,
                         height: letterHeight / 2 - 3,
@@ -107,7 +85,7 @@ export function CompareSequenceResult({ firstSequence, secondSequence }: Compare
             <Box sx={{ display: "flex", flexWrap: "wrap", position: "absolute", top: "1em", gap: "1px", visibility: showSecondSequence ? "visible" : "hidden" }}>
                 {secondSequence.split("").map((protein2, i) =>
                     <Box key={i} sx={{
-                        backgroundColor: protein2 !== firstSequence[i]? "rgb(255, 0, 0)" : undefined,//!!!!
+                        backgroundColor: protein2 !== firstSequence[i]? group2color.mismatchWarning : undefined,
                         borderRadius: 1,
                         width: letterWidth-1,
                         height: letterHeight / 2 - 2,

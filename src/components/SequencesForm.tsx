@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Container, Typography, TextField, Button, Box } from "@mui/material"
 import useMediaQuery from '@mui/material/useMediaQuery';
-import warning from "./icons/warning.svg"; //!!!!
+import warning from "./icons/warning.svg"; 
 import { ColorScheme } from "./ColorScheme";
 import { CompareSequenceResult } from "./CompareSequencesResult";
 
