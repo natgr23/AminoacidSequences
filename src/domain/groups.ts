@@ -5,6 +5,7 @@ export const GROUPS = [
   "negativelyChargedAminoAcids",
   "positivelyChargedAminoAcids",
   "polarChargedAminoAcids",
+  "mismatchWarning"
 ] as const;
 
 export type Group = typeof GROUPS[number];
@@ -12,8 +13,8 @@ export type Group = typeof GROUPS[number];
 export type WrongGroupType = "mismatchWarning";
 
 export const group2color: Record<Group | WrongGroupType, string> = {
-  cysteine: "#67E4A6",
-  hydrophobicAminoAcids: "#FFEA00",
+  cysteine:"#FFEA00",
+  hydrophobicAminoAcids:  "#67E4A6",
   glycine: "#C4C4C4",
   negativelyChargedAminoAcids: "#FC9CAC",
   positivelyChargedAminoAcids: "#BB99FF",
